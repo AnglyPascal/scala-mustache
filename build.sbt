@@ -1,15 +1,15 @@
-name := "mustache"
+import Dependencies._
 
-version := "1.2"
+ThisBuild / scalaVersion     := "2.13.8"
+ThisBuild / version          := "0.1.2-SNAPSHOT"
 
-scalaVersion := "2.11.1"
-
-resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/"
-
-resolvers += "Typesafe Snapshots Repository" at "http://repo.typesafe.com/typesafe/snapshots/"
-
-libraryDependencies ++= Seq(
-  "junit" % "junit" % "4.8.1" % "test->default",
-  "org.specs2" %% "specs2" % "2.3.12" % "test->default",
-  "com.typesafe.akka" %% "akka-actor" % "2.3.3" % "test->default"
-)
+lazy val root = (project in file("."))
+  .settings(
+    name := "mustache",
+    libraryDependencies += scalaTest % Test,
+    /* libraryDependencies += "junit" % "junit" % "4.8.1" % "test->default", */
+    /* libraryDependencies += "org.specs2" %% "specs2-core" % "5.0.7" % "test", */
+    /* libraryDependencies += "com.typesafe.akka" %% "akka-actor" % "2.3.3" % "test->default", */
+    resolvers += "Typesafe Repository" at "https://repo.typesafe.com/typesafe/releases/",
+    resolvers += "Typesafe Snapshots Repository" at "https://repo.typesafe.com/typesafe/snapshots/"
+  )

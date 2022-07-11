@@ -1,0 +1,11 @@
+[0m[[0m[33mwarn[0m] [0m[0m/run/media/file1/MEGA/Main/git/scala-mustache/src/main/scala/Token.scala:181:16: non-variable type argument String in type pattern String => _ is unchecked since it is eliminated by erasure[0m
+[0m[[0m[33mwarn[0m] [0m[0m        case f:Function1[String, _] => [0m
+[0m[[0m[33mwarn[0m] [0m[0m               ^[0m
+[0m[[0m[33mwarn[0m] [0m[0m/run/media/file1/MEGA/Main/git/scala-mustache/src/main/scala/Token.scala:184:16: the type test for pattern (String, String => String) => _ cannot be checked at runtime because it has type parameters eliminated by erasure[0m
+[0m[[0m[33mwarn[0m] [0m[0m        case f:Function2[String, Function1[String,String], _] => [0m
+[0m[[0m[33mwarn[0m] [0m[0m               ^[0m
+[0m[[0m[33mwarn[0m] [0m[0m/run/media/file1/MEGA/Main/git/scala-mustache/src/main/scala/Token.scala:197:19: non-variable type argument String in type pattern scala.collection.Map[String,_] is unchecked since it is eliminated by erasure[0m
+[0m[[0m[33mwarn[0m] [0m[0m          case m: Map[String, _] =>[0m
+[0m[[0m[33mwarn[0m] [0m[0m                  ^[0m
+[0m[[0m[33mwarn[0m] [0m[0m2 deprecations (since 2.13.0); re-run with -deprecation for details[0m
+[0m[[0m[33mwarn[0m] [0m[0mfour warnings found[0m
