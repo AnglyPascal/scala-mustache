@@ -1,8 +1,8 @@
 import org.specs2.mutable._
 import org.specs2.runner._
 
+package mustache 
 
-package mustache {
 object ParserSpecification extends SpecificationWithJUnit {
 
   "parser" should {
@@ -140,5 +140,4 @@ object ParserSpecification extends SpecificationWithJUnit {
 
   }
 
-}
 }

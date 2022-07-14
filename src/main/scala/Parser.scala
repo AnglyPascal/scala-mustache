@@ -1,4 +1,4 @@
-package Mustache 
+package mustache 
 
 import scala.annotation.tailrec
 import scala.io.Source
@@ -12,13 +12,13 @@ private object CTag extends ParserState
 private abstract class Parser {
   val src:Source
 
-  var state:ParserState = Text
-  var otag:String
-  var ctag:String
-  var tagPosition:Int = 0
-  var line:Int = 1
-  var prev:Char = '\uffff'
-  var cur:Char = '\uffff'
+  var state: ParserState = Text
+  var otag: String
+  var ctag: String
+  var tagPosition: Int = 0
+  var line: Int = 1
+  var prev: Char = '\uffff'
+  var cur: Char = '\uffff'
   var curlyBraceTag:Boolean = false
   var stack:List[Token] = List()
 
@@ -84,7 +84,7 @@ private abstract class Parser {
     prev = cur
 
     if (src.hasNext) {
-      cur = src.next
+      cur = src.next()
       // \n, \r\n, \r
       if (cur == '\r' || (cur == '\n' && prev != '\r')) 
         line = line+1
@@ -101,7 +101,7 @@ private abstract class Parser {
     buf.append(ctag.substring(0,tagPosition))
     state = Tag
   }
-  private def reduce:String = { val r = buf.toString; buf.clear; r }
+  private def reduce:String = { val r = buf.toString; buf.clear(); r }
 
   private def staticText:Unit = { 
     val r = reduce
@@ -115,7 +115,7 @@ private abstract class Parser {
     else trimmed
   }
 
-  private def tag:Unit = {
+  private def tag: Unit = {
     state = Text
     val content = checkContent(reduce)
     def skipFirst = checkContent(content substring 1)

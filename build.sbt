@@ -7,9 +7,10 @@ lazy val root = (project in file("."))
   .settings(
     name := "mustache",
     libraryDependencies += scalaTest % Test,
-    /* libraryDependencies += "junit" % "junit" % "4.8.1" % "test->default", */
-    /* libraryDependencies += "org.specs2" %% "specs2-core" % "5.0.7" % "test", */
-    /* libraryDependencies += "com.typesafe.akka" %% "akka-actor" % "2.3.3" % "test->default", */
+    libraryDependencies ++= Seq(
+      "com.rallyhealth" %% "weepickle-v1" % "1.7.2",
+      "com.rallyhealth" %% "weeyaml-v1" % "1.7.2"
+    ),
     resolvers += "Typesafe Repository" at "https://repo.typesafe.com/typesafe/releases/",
     resolvers += "Typesafe Snapshots Repository" at "https://repo.typesafe.com/typesafe/snapshots/"
   )
