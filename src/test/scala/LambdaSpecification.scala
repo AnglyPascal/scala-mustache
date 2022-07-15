@@ -3,11 +3,11 @@ import org.specs2.runner._
 
 
 package mustache {
-object LambdaSpecification extends SpecificationWithJUnit {
+object LambdaSpecification extends Specification {
 
   "mustache" should {
 
-    "render values returned by no-args functions" in {
+    "render values returned by no-args functions" >> {
       new Mustache(
         "{{value}}"
       ).render(Map(
@@ -15,7 +15,7 @@ object LambdaSpecification extends SpecificationWithJUnit {
       )).toString must be equalTo("hey!")
     }
 
-    "render values returned by functions with string arg" in {
+    "render values returned by functions with string arg" >> {
       new Mustache(
         "{{#bold}}some text{{/bold}}"
       ).render(Map(
@@ -23,7 +23,7 @@ object LambdaSpecification extends SpecificationWithJUnit {
       )).toString must be equalTo("<b>some text</b>")
     }
 
-    "render values returned by functions with render param" in {
+    "render values returned by functions with render param" >> {
       new Mustache(
         "{{#bold}}Hello, {{name}}!{{/bold}}"
       ).render(Map(
@@ -32,7 +32,7 @@ object LambdaSpecification extends SpecificationWithJUnit {
       )).toString must be equalTo("<b>Hello, world!</b>")
     }
 
-    "correctly remember open and close tags when rendering dynamic templates" in {
+    "correctly remember open and close tags when rendering dynamic templates" >> {
       new Mustache(
         "{{= ** ** =}}**#bold**Hello,**=< >=** <name>!<=__ __=>__/bold__"
       ).render(Map(

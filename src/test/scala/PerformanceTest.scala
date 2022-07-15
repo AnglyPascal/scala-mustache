@@ -1,6 +1,7 @@
 import scala.io.Source
 
 package mustache {
+
 object PerformanceTest {
 
   def main(args: Array[String]) = 

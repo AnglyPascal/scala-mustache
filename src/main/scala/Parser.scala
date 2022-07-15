@@ -12,15 +12,15 @@ private object CTag extends ParserState
 private abstract class Parser {
   val src:Source
 
-  var state: ParserState = Text
+  var state: ParserState     = Text
   var otag: String
   var ctag: String
-  var tagPosition: Int = 0
-  var line: Int = 1
-  var prev: Char = '\uffff'
-  var cur: Char = '\uffff'
-  var curlyBraceTag:Boolean = false
-  var stack:List[Token] = List()
+  var tagPosition: Int       = 0
+  var line: Int              = 1
+  var prev: Char             = '\uffff'
+  var cur: Char              = '\uffff'
+  var curlyBraceTag: Boolean = false
+  var stack: List[Token]     = List()
 
   val buf = new StringBuilder(8192)
 
@@ -117,9 +117,9 @@ private abstract class Parser {
 
   private def tag: Unit = {
     state = Text
-    val content = checkContent(reduce)
-    def skipFirst = checkContent(content substring 1)
-    def skipBoth = checkContent(content substring(1, content.length-1))
+    val content   = checkContent(reduce)
+    def skipFirst = checkContent(content.substring(1))
+    def skipBoth  = checkContent(content.substring(1, content.length-1))
 
     content.charAt(0) match {
       case '!' => // ignore comments
@@ -128,7 +128,8 @@ private abstract class Parser {
       case '{' =>
         if (content endsWith "}")
           stack = UnescapedToken(skipBoth,otag,ctag)::stack
-        else fail("Unbalanced \"{\" in tag \""+content+"\"")
+        else 
+          fail("Unbalanced \"{\" in tag \""+content+"\"")
       case '^' =>
         stack = IncompleteSection(skipFirst, true, otag, ctag)::stack
       case '#' =>
@@ -138,22 +139,17 @@ private abstract class Parser {
 
         @tailrec
         def addSection (
-          children:List[Token],
-          s:List[Token]) : List[Token] = 
+          children: List[Token],
+          s: List[Token]) : List[Token] = 
           s.headOption match {
-            case None => fail("Closing unopened section \""+name+"\"")
+            case None => 
+              fail("Closing unopened section \""+name+"\"")
 
-            case Some(IncompleteSection(key, inverted,startOTag,startCTag)) =>
+            case Some(IncompleteSection(key, inverted, startOTag, startCTag)) =>
               if (key == name)
-                SectionToken(
-                  inverted, 
-                  name, 
-                  children, 
-                  startOTag, 
-                  startCTag, 
-                  otag, 
-                  ctag) :: s.tail
-              else fail("Unclosed section \""+key+"\"")
+                SectionToken(inverted, name, children, startOTag, startCTag, otag, ctag) :: s.tail
+              else 
+                fail("Unclosed section \""+key+"\"")
 
             case Some(other) => 
               addSection(other::children, s.tail)
@@ -161,16 +157,18 @@ private abstract class Parser {
         stack = addSection(List[Token](), stack)
       }
       case '>' | '<' =>
-        stack = PartialToken(skipFirst,otag,ctag)::stack
+        stack = PartialToken(skipFirst, otag, ctag)::stack
       case '=' =>
         if (content.size>2 && content.endsWith("=")) {
           val changeDelimiter = skipBoth
-          changeDelimiter.split("""\s+""",-1).toSeq match {
+          changeDelimiter.split("""\s+""", -1).toSeq match {
             case Seq(o,c) => { 
-                stack = ChangeDelimitersToken(o,c,otag,ctag)::stack
-                otag = o; ctag = c 
+                stack = ChangeDelimitersToken(o, c, otag, ctag)::stack
+                otag = o
+                ctag = c 
               }
-            case _ => fail("Invalid change delimiter tag content: \""+changeDelimiter+"\"")
+            case _ => 
+              fail("Invalid change delimiter tag content: \""+changeDelimiter+"\"")
           }
         } 
         else 

@@ -3,11 +3,11 @@ import org.specs2.runner._
 
 
 package mustache {
-object ManPageExamplesSpecification extends SpecificationWithJUnit {
+object ManPageExamplesSpecification extends Specification {
 
   "mustache" should {
 
-    "render typical template from man page" in {
+    "render typical template from man page" >> {
       new Mustache(
         "Hello {{name}}\nYou have just won ${{value}}!\n"+
         "{{#in_ca}}\nWell, ${{taxed_value}}, after taxes.\n"+
@@ -23,7 +23,7 @@ object ManPageExamplesSpecification extends SpecificationWithJUnit {
       )
     }
 
-    "render variables example from man page" in {
+    "render variables example from man page" >> {
       new Mustache(
         "* {{name}}\n* {{age}}\n* {{company}}\n* {{{company}}}"
       ).render(Map(
@@ -34,7 +34,7 @@ object ManPageExamplesSpecification extends SpecificationWithJUnit {
       )
     }
 
-    "render section example from man page" in {
+    "render section example from man page" >> {
       new Mustache(
         "Shown.\n{{#nothin}}\nNever shown!\n{{/nothin}}"
       ).render(Map(
@@ -44,7 +44,7 @@ object ManPageExamplesSpecification extends SpecificationWithJUnit {
       )
     }
 
-    "render section list example from man page" in {
+    "render section list example from man page" >> {
       new Mustache(
         "{{#repo}}\n  <b>{{name}}</b>\n{{/repo}}"
       ).render(Map(
@@ -58,7 +58,7 @@ object ManPageExamplesSpecification extends SpecificationWithJUnit {
       )
     }
 
-    "render section non-false example from man page" in {
+    "render section non-false example from man page" >> {
       new Mustache(
         "{{#person?}}Hi {{name}}!{{/person?}}"
       ).render(Map(
@@ -68,7 +68,7 @@ object ManPageExamplesSpecification extends SpecificationWithJUnit {
       )
     }
 
-    "render inverted section example from man page" in {
+    "render inverted section example from man page" >> {
       new Mustache(
         "{{#repo}}<b>{{name}}</b>{{/repo}}{{^repo}}No repos :({{/repo}}"
       ).render(Map(
@@ -78,7 +78,7 @@ object ManPageExamplesSpecification extends SpecificationWithJUnit {
       )
     }
 
-    "render comments example from man page" in {
+    "render comments example from man page" >> {
       new Mustache(
         "<h1>Today{{! ignore me }}.</h1>"
       ).render().toString must be equalTo(
@@ -86,7 +86,7 @@ object ManPageExamplesSpecification extends SpecificationWithJUnit {
       )
     }
 
-    "render partials example from man page" in {
+    "render partials example from man page" >> {
       val userTemplate = new Mustache("<strong>{{name}}</strong>")
       val baseTemplate = new Mustache(
         "<h2>Names</h2>\n{{#names}}\n  {{> user}}\n{{/names}}"
@@ -102,7 +102,7 @@ object ManPageExamplesSpecification extends SpecificationWithJUnit {
       )
     }
 
-    "render delimiters example from man page" in {
+    "render delimiters example from man page" >> {
       new Mustache(
         "* {{default_tags}}\n{{=<% %>=}}\n* <% erb_style_tags %>\n"+
         "<%={{ }}=%>\n* {{ default_tags_again }}"

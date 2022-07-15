@@ -2,11 +2,11 @@ import org.specs2.mutable._
 import org.specs2.runner._
 
 package mustache {
-object Issue3Specification extends SpecificationWithJUnit {
+object Issue3Specification extends Specification {
 
   "mustache" should {
 
-    "dive into Some[T] when rendering section token" in {
+    "dive into Some[T] when rendering section token" >> {
       new Mustache(
         "{{#foo}}{{value}}{{/foo}}"
       ).render(Map(
@@ -14,7 +14,7 @@ object Issue3Specification extends SpecificationWithJUnit {
       )).toString must be equalTo("bar")
     }
 
-    "properly handle Some[T] when rendering inverse section token" in {
+    "properly handle Some[T] when rendering inverse section token" >> {
       new Mustache(
         "{{^foo}}this string should't be rendered{{/foo}}"
       ).render(Map(
@@ -22,7 +22,7 @@ object Issue3Specification extends SpecificationWithJUnit {
       )).toString must be equalTo("")
     }
 
-    "properly handle None[T] when rendering section token" in {
+    "properly handle None[T] when rendering section token" >> {
       new Mustache(
         "{{#foo}}this string shouldn't be rendered{{/foo}}"
       ).render(Map(
@@ -30,7 +30,7 @@ object Issue3Specification extends SpecificationWithJUnit {
       )).toString must be equalTo("")
     }
 
-    "properly handle None[T] when rendering inverse section token" in {
+    "properly handle None[T] when rendering inverse section token" >> {
       new Mustache(
         "{{^foo}}42{{/foo}}"
       ).render(Map(
@@ -38,7 +38,7 @@ object Issue3Specification extends SpecificationWithJUnit {
       )).toString must be equalTo("42")
     }
 
-    "resolve nested Option[T] when rendering section token" in {
+    "resolve nested Option[T] when rendering section token" >> {
       new Mustache(
         "{{#foo}}{{value}}{{/foo}}"
       ).render(Map(

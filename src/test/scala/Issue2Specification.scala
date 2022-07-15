@@ -1,12 +1,13 @@
+package mustache 
+
 import org.specs2.mutable._
 import org.specs2.runner._
 
-package mustache {
-object Issue2Specification extends SpecificationWithJUnit {
+object Issue2Specification extends Specification {
 
   "mustache" should {
 
-    "replace section content by string returned from lambda context" in {
+    "replace section content by string returned from lambda context" >> {
       new Mustache(
         "{{#foo}}42{{/foo}}"
       ).render(Map(
@@ -14,7 +15,7 @@ object Issue2Specification extends SpecificationWithJUnit {
       )).toString must be equalTo("bar")
     }
 
-    "render strings obtained from context" in {
+    "render strings obtained from context" >> {
       new Mustache(
         "{{#name}}shouldn't be displayed{{/name}}"
       ).render(Map(
@@ -22,7 +23,7 @@ object Issue2Specification extends SpecificationWithJUnit {
       )).toString must be equalTo("Chris")
     }
 
-    "display inverted section content if lambda returns None" in {
+    "display inverted section content if lambda returns None" >> {
       new Mustache(
         "{{^foo}}Hey!{{/foo}}"
       ).render(Map(
@@ -30,7 +31,7 @@ object Issue2Specification extends SpecificationWithJUnit {
       )).toString must be equalTo("Hey!")
     }
 
-    "display inverted section content if lambda returns null" in {
+    "display inverted section content if lambda returns null" >> {
       new Mustache(
         "{{^foo}}Hey!{{/foo}}"
       ).render(Map(
@@ -38,7 +39,7 @@ object Issue2Specification extends SpecificationWithJUnit {
       )).toString must be equalTo("Hey!")
     }
 
-    "display inverted section content if lambda returns empty collection" in {
+    "display inverted section content if lambda returns empty collection" >> {
       new Mustache(
         "{{^foo}}Hey!{{/foo}}"
       ).render(Map(
@@ -46,7 +47,7 @@ object Issue2Specification extends SpecificationWithJUnit {
       )).toString must be equalTo("Hey!")
     }
 
-    "dive into an object when rendering section token" in {
+    "dive into an object when rendering section token" >> {
       object SampleObject
 
       new Mustache(
@@ -56,7 +57,7 @@ object Issue2Specification extends SpecificationWithJUnit {
       )).toString must be equalTo("object is in the context")      
     }
 
-    "not display inverted section content when there is an object in context" in {
+    "not display inverted section content when there is an object in context" >> {
       object SampleObject
 
       new Mustache(
@@ -65,13 +66,5 @@ object Issue2Specification extends SpecificationWithJUnit {
         "foo"->SampleObject
       )).toString must be equalTo("")      
     }
-
-
-
   }
-
 }
-}
-
-
-

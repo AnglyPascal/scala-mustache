@@ -1,11 +1,15 @@
-import scala.concurrent.{future}
+package mustache 
+
+import scala.concurrent.{Future}
 import scala.concurrent.ExecutionContext.Implicits.global
 
 import org.specs2.mutable._
 import org.specs2.runner._
 
-package mustache {
-object ContextHandlerSpecification extends SpecificationWithJUnit {
+import com.rallyhealth.weejson.v1._
+
+object ContextHandlerSpecification 
+  extends Specification {
 
   "context handler" should {
     object T extends ContextHandler
@@ -14,15 +18,20 @@ object ContextHandlerSpecification extends SpecificationWithJUnit {
       def globalFn1(str:String) = ">"+str+"<"
     }
 
-    def render(context:Any,partials:Map[String,Mustache],callstack:List[Any])(str:String) = ""
+    def render(context:Any, partials:scala.collection.Map[String,Mustache], callstack:List[Any])(str:String) = ""
 
-    "return None for null context" in {
+    "return None for null context" >> {
       T.valueOf("testKey", null, Map(), List(SampleTemplate),"", render) must be equalTo(None)
     }
 
-    "extract values out of the map" in {
+    "extract values out of the map" >> {
       T.valueOf("n/a", Map(), Map(), List(SampleTemplate),"", render) must be equalTo(None)
       T.valueOf("foo", Map("foo"->"bar"), Map(), List(SampleTemplate),"", render) must be equalTo("bar")
+    }
+
+    "extract values out of weejson AST" >> {
+      T.valueOf("n/a", Obj(), Map(), List(SampleTemplate),"", render) must be equalTo(None)
+      T.valueOf("foo", Obj("foo"->"bar"), Map(), List(SampleTemplate),"", render) must be equalTo("bar")
     }
 
     object SampleObject {
@@ -30,7 +39,7 @@ object ContextHandlerSpecification extends SpecificationWithJUnit {
       def sampleMethod = "bar"
     }
 
-    "extract values out of the singletone" in {
+    "extract values out of the singletone" >> {
       T.valueOf("n/a", SampleObject, Map(), List(SampleTemplate),"", render) must be equalTo(None)
       T.valueOf("sampleField", SampleObject, Map(), List(SampleTemplate),"", render) must be equalTo("foo")
       T.valueOf("sampleMethod", SampleObject, Map(), List(SampleTemplate),"", render) must be equalTo("bar")
@@ -38,7 +47,7 @@ object ContextHandlerSpecification extends SpecificationWithJUnit {
 
     case class SampleCaseClass(foo:String, bar:String)
 
-    "extract values out of the case class" in {
+    "extract values out of the case class" >> {
       val ctx = SampleCaseClass("fooValue", "barValue")
       T.valueOf("n/a", ctx, Map(), List(SampleTemplate),"", render) must be equalTo(None)
       T.valueOf("foo", ctx, Map(), List(SampleTemplate),"", render) must be equalTo("fooValue")
@@ -52,29 +61,30 @@ object ContextHandlerSpecification extends SpecificationWithJUnit {
     object SampleTraitObject extends SampleTrait { 
       val foo = "42" 
     }
-    "extract values out of the traits" in {
+
+    "extract values out of the traits" >> {
       T.valueOf("n/a", SampleTraitObject, Map(), List(SampleTemplate),"", render) must be equalTo(None)
       T.valueOf("foo", SampleTraitObject, Map(), List(SampleTemplate),"", render) must be equalTo("42")
       T.valueOf("bar", SampleTraitObject, Map(), List(SampleTemplate),"", render) must be equalTo("barValue")
     }
 
-    "extract values out of the closures" in {
+    "extract values out of the closures" >> {
       T.valueOf("test", Map( "test"-> (()=>{42}) ), Map(), List(SampleTemplate),"", render) must be equalTo(42)
     }
 
-    "extract values out of the futures" in {
-      T.valueOf("test", Map( "test"-> future{ 42 } ), Map(), List(SampleTemplate),"", render) must be equalTo(42)
+    "extract values out of the futures" >> {
+      T.valueOf("test", Map( "test"-> Future{ 42 } ), Map(), List(SampleTemplate),"", render) must be equalTo(42)
     }
 
-    "extract values out of the nested closures / futures" in {
-      T.valueOf("test", Map( "test"-> future{ ()=>{ 42 } } ), Map(), List(SampleTemplate),"", render) must be equalTo(42)
+    "extract values out of the nested closures / futures" >> {
+      T.valueOf("test", Map( "test"-> Future{ ()=>{ 42 } } ), Map(), List(SampleTemplate),"", render) must be equalTo(42)
     }
 
-    "extract simple globals" in {
+    "extract simple globals" >> {
       T.valueOf("globalFn0", null, Map(), List(SampleTemplate),"", render) must be equalTo("global value")
     }
 
   }
 
 }
-}
+

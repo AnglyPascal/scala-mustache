@@ -2,13 +2,13 @@ import org.specs2.mutable._
 import org.specs2.runner._
 
 package mustache {
-object SectionTokenSpecification extends SpecificationWithJUnit {
+object SectionTokenSpecification extends Specification {
 
   object SampleTemplate extends Mustache("")
 
   "section token" should {
 
-    "not render children with null context" in {
+    "not render children with null context" >> {
       SectionToken(false
                     ,"foo"
                     ,List(
@@ -23,7 +23,7 @@ object SectionTokenSpecification extends SpecificationWithJUnit {
       ).toString must be equalTo("")
     }
 
-    "not render children with None context" in {
+    "not render children with None context" >> {
       SectionToken(false
                     ,"foo"
                     ,List(
@@ -38,7 +38,7 @@ object SectionTokenSpecification extends SpecificationWithJUnit {
       ).toString must be equalTo("")
     }
 
-    "handle boolean context" in {
+    "handle boolean context" >> {
       val token = SectionToken(
                     false
                     ,"foo"
@@ -57,7 +57,7 @@ object SectionTokenSpecification extends SpecificationWithJUnit {
       ).toString must be equalTo("bar")
     }
 
-    "handle list context" in {
+    "handle list context" >> {
       val token = SectionToken(
                     false
                     ,"foo"
@@ -84,7 +84,7 @@ object SectionTokenSpecification extends SpecificationWithJUnit {
       ).toString must be equalTo("bar:1,bar:2,bar:3,")
     }
 
-    "handle inverse null conext" in {
+    "handle inverse null conext" >> {
       SectionToken(true
                     ,"foo"
                     ,List(
@@ -99,7 +99,7 @@ object SectionTokenSpecification extends SpecificationWithJUnit {
       ).toString must be equalTo("bar")
     }
 
-    "handle inverse boolean context" in {
+    "handle inverse boolean context" >> {
       val token = SectionToken(
                     true
                     ,"foo"
@@ -118,7 +118,7 @@ object SectionTokenSpecification extends SpecificationWithJUnit {
       ).toString must be equalTo("")
     }
 
-    "handle inverse list context" in {
+    "handle inverse list context" >> {
       val token = SectionToken(
                     true
                     ,"foo"
