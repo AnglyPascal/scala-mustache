@@ -5,6 +5,7 @@ import scala.io.Source
 import scala.collection.Map
 
 import com.rallyhealth.weejson.v1._
+import com.rallyhealth.weejson.v1.jackson.FromJson
 import com.rallyhealth.weepickle.v1.WeePickle._
 
 /**
@@ -56,7 +57,7 @@ class Mustache(root: Token)
   def this(str: String, open: String, close: String) = 
     this(Source.fromString(str), open, close)
 
-  private val compiledTemplate = root
+  private val compiledTemplate: Token = root
 
   /** Get the methods defined in the instance of a Mustache class
    *  that are of the type Function0[_] or Function1[String, _] 
@@ -99,8 +100,17 @@ class Mustache(root: Token)
   def render(
     context: Any                    = null,
     partials: Map[String, Mustache] = Map(),
-    callstack: List[Any]            = List(this)): String =
-      product(context, partials, callstack).toString
+    callstack: List[Any]            = List(this)): String = {
+      context match {
+        case c: String => {
+          val obj = FromJson(c).transform(Value)
+          product(obj, partials, callstack).toString
+        }
+        case other =>
+          product(other, partials, callstack).toString
+      }
+
+  }
 
   /** returns a TokenProduct with the rendered template
    */
@@ -121,19 +131,19 @@ object Mustache{
     val baseTemplate = new Mustache(
       "<h2>Names</h2>\n{{#names}}\n  {{> user}}\n{{/names}}"
     )
-    val ctx = Map(
-      "names"-> List(
-        Map("name"->Str("Alice")),
-        Map("name"->Str("Bob"))
+    val obj  = Obj(
+      "names"-> Arr(
+        Obj("name"->Str("Alice")),
+        Obj("name"->Str("Bob"))
       )
     )
+    val str = """{"names": [{"name": "Alice"}, {"name": "Bob"}]}"""
 
     val partials = Map("user" -> userTemplate)
     // println(baseTemplate.render(ctx, partials))
     
-    val t = FromScala(ctx).transform(Value)
-    val v = Map("name" -> "bruh")
-    println(baseTemplate.render(t, partials))
+    println(baseTemplate.render(obj, partials))
+    println(baseTemplate.render(str, partials))
     // val s = Str("ah")
     // println(s.str.getClass)
     // println(template.render(v))
