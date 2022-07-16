@@ -19,7 +19,7 @@ trait ContextHandler extends TypeAliases {
   def valueOf(key: String, 
     context: Any, partials: Partials, callstack: CallStack, 
     childrenString: String, render: Renderer): Any = {
-
+ 
     val r = render(context, partials, callstack)
 
     // for all the Mustache object in callstack
@@ -41,6 +41,7 @@ trait ContextHandler extends TypeAliases {
       case other => other
     }
   }
+
     
   @tailrec
   private def eval(value: Any, childrenString: String, render: (String) => String): Any =
@@ -53,15 +54,10 @@ trait ContextHandler extends TypeAliases {
       case m: Obj      => m.obj.toMap
 
       // TODO: understand the synchronization part
-      case a: Awaitable[_] =>
-        eval(Await.result(a, Duration.Inf), childrenString, render)
+      case a: Awaitable[_] => eval(Await.result(a, Duration.Inf), childrenString, render)
 
-      case f: Function0[_] => 
-        eval(f(), childrenString, render)
-
-      case f: Function1[String, _] => 
-        eval(f(childrenString), childrenString, render)
-
+      case f: Function0[_] => eval(f(), childrenString, render)
+      case f: Function1[String, _] => eval(f(childrenString), childrenString, render)
       case f: Function2[String, Function1[String, String], _] => 
         eval(f(childrenString, render), childrenString, render)
 
@@ -69,6 +65,7 @@ trait ContextHandler extends TypeAliases {
       case n: Num => n.num
       case other  => other
     }
+
 
   // find the key in the callstack until
   // the key has been found

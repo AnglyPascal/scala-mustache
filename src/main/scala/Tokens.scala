@@ -77,7 +77,7 @@ case class PartialToken(key: String, otag: String, ctag: String)
         case _ => 
           throw new IllegalArgumentException("Partial \""+ key +"\" is not defined.")
       }
-  def templateSource:String = otag+">"+key+ctag
+  def templateSource: String = otag+">"+key+ctag
 }
 
 /** SectionToken represents the token for a section of mustache template

@@ -7,7 +7,7 @@ import scala.collection.Map
  */
 trait Token extends TypeAliases {
   def render(context: Any, partials: Partials, callstack: CallStack): TokenProduct
-  def templateSource:String
+  def templateSource: String
 }
 
 /** CompositeToken combines a list of tokens

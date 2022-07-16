@@ -3,15 +3,15 @@ Mustache
 
 What is Mustache?
 -----------------
-
 [Mustache][1] is a logic-free template engine inspired by ctemplate and et. 
 
-As ctemplates says, "It emphasizes separating logic from presentation: it is impossible to embed application logic in this template language".
+As ctemplates says, "It emphasizes separating logic from presentation: it is impossible
+to embed application logic in this template language".
 
 Usage
 -----
-
-To get the language-agnostic overview of Mustache's template syntax and examples of Mustache templates, see <http://mustache.github.com/mustache.5.html>. 
+To get the language-agnostic overview of Mustache's template syntax and examples of
+Mustache templates, see <http://mustache.github.com/mustache.5.html>. 
 
 Getting started with scala-mustache is easy:
 
@@ -54,18 +54,22 @@ Returns:
 
     alpha bravo charlie
 
-When the context value is a callable object, such as a function or lambda, the object will be invoked and passed the block of text. The text passed is the literal block, unrendered. {{tags}} will not have been expanded - the lambda should do that on its own. In this way you can implement filters or caching.
+When the context value is a callable object, such as a function or lambda, the object
+will be invoked and passed the block of text. The text passed is the literal block,
+unrendered. {{tags}} will not have been expanded - the lambda should do that on its
+own. In this way you can implement filters or caching.
 
     val template = new Mustache("{{#wrapped}}{{name}} is awesome.{{/wrapped}}")
-    template.render(Map("name"->"Willy"
-        ,"wrapped"->((str:String, render:(String)=>String)=>{ "<b>"+render(str)+"</b>" })
+    template.render(Map("name"->"Willy",
+      "wrapped"->((str:String, render:(String)=>String)=>{ "<b>"+render(str)+"</b>" })
     )
 
 Returns:
 
     <b>Willy is awesome.</b>
 
-Alternatively you can pack your helpers directly into the Mustache subclass. Following example is effectively the same as previous:
+Alternatively you can pack your helpers directly into the Mustache subclass. Following
+example is effectively the same as previous:
 
     class MyMustache(template:String) 
       extends Mustache(template) {
@@ -76,7 +80,8 @@ Alternatively you can pack your helpers directly into the Mustache subclass. Fol
     val template = new MyMustache("{{#wrapped}}{{name}} is awesome.{{/wrapped}}") 
     template.render(Map("name"->"Willy"))
 
-Sometimes it is nice to keep different kinds of helpers separate. To do so, you can define helper traits and then mix them up as needed:
+Sometimes it is nice to keep different kinds of helpers separate. To do so, you can
+define helper traits and then mix them up as needed:
 
     trait MyHelper {
       this: MyHelper with MustacheHelperSupport =>
@@ -92,17 +97,19 @@ MustacheHelperSupport trait defines following methods you can use in your helper
     protected def context:Any                   // returns current context
     protected def render(template:String):Any   // renders template string
 
+
 Dependencies / Build
 --------------------
-
 This project has absolutely zero runtime dependencies and you can build it with [Simple Build Tool][2].
+
 
 Licensing
 ---------
-
 This project is licensed under the MIT license. 
 
-I’m not a lawyer and this is not a legal advice, but it is free to use in any projects. Free as in “free beer”. Should you have any questions on licensing, consult your lawyer.
+I’m not a lawyer and this is not a legal advice, but it is free to use in any projects.
+Free as in “free beer”. Should you have any questions on licensing, consult your
+lawyer.
 
 Enjoy !
 
