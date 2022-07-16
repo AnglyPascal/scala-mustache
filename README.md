@@ -15,48 +15,48 @@ Mustache templates, see <http://mustache.github.io/mustache.5.html>.
 
 Getting started with scala-mustache is easy:
 ``` scala
-    import mustache._
-    ...
-    val template = new Mustache("Hello, {{ name }}!")
-    template.render(Map("name"->"world"))
+import mustache._
+...
+val template = new Mustache("Hello, {{ name }}!")
+template.render(Map("name"->"world"))
 ```
 Returns following:
 ``` html
-    Hello, world!
+Hello, world!
 ```
 
 ### Partials
 
 Following example shows how to use partials:
 ``` scala
-    val userTemplate = new Mustache("<strong>{{name}}</strong>")
-    val baseTemplate = new Mustache(
-      "<h2>Names</h2>\n{{#names}}\n  {{> user}}\n{{/names}}"
-    )
-    val ctx = Map("names" -> List(
-                   Map("name"->"Alice"),
-                   Map("name"->"Bob")
-                )
-              )
-    val partials = Map("user" -> userTemplate)
-    baseTemplate.render(ctx, partials)
+val userTemplate = new Mustache("<strong>{{name}}</strong>")
+val baseTemplate = new Mustache(
+  "<h2>Names</h2>\n{{#names}}\n  {{> user}}\n{{/names}}"
+)
+val ctx = Map("names" -> List(
+               Map("name"->"Alice"),
+               Map("name"->"Bob")
+            )
+          )
+val partials = Map("user" -> userTemplate)
+baseTemplate.render(ctx, partials)
 ```
 Templates defined here can be thought of as a single, expanded template:
 ``` mustache
-    <h2>Names</h2>
-    {{#names}}
-      <strong>{{name}}</strong>
-    {{/names}}
+<h2>Names</h2>
+{{#names}}
+  <strong>{{name}}</strong>
+{{/names}}
 ```
 
 You can use `{{.}}` and `{{{.}}}` to reference current context value:
 ``` scala
-    val template = new Mustache("{{#list}}{{.}} {{/list}}")
-    template.render(Map("list" -> List("alpha", "bravo", "charlie")))
+val template = new Mustache("{{#list}}{{.}} {{/list}}")
+template.render(Map("list" -> List("alpha", "bravo", "charlie")))
 ```
 Returns:
 ``` html
-    alpha bravo charlie 
+alpha bravo charlie 
 ```
 
 ### Rendering with objects
@@ -66,81 +66,81 @@ will be invoked and passed the block of text. The text passed is the literal blo
 unrendered. `{{tags}}` will not have been expanded - the lambda should do that on its
 own. In this way you can implement filters or caching.
 ``` scala
-    val template = new Mustache("{{#wrapped}}{{name}} is awesome.{{/wrapped}}")
-    template.render(Map(
-        "name" -> "Willy",
-        "wrapped" -> (
-            (str: String, render: (String) => String) => { "<b>"+render(str)+"</b>" }
-        )
+val template = new Mustache("{{#wrapped}}{{name}} is awesome.{{/wrapped}}")
+template.render(Map(
+    "name" -> "Willy",
+    "wrapped" -> (
+        (str: String, render: (String) => String) => { "<b>"+render(str)+"</b>" }
     )
+)
 ```
 Returns:
 ``` html
-    <b>Willy is awesome.</b>
+<b>Willy is awesome.</b>
 ```
 
 Alternatively you can pack your helpers directly into the Mustache subclass. Following
 example is effectively the same as previous:
 ``` scala
-    class MyMustache(template:String) 
-      extends Mustache(template) {
+class MyMustache(template:String) 
+  extends Mustache(template) {
 
-      def wrapped(str:String) = "<b>"+render(str)+"</b>"
+  def wrapped(str:String) = "<b>"+render(str)+"</b>"
 
-    }
-    val template = new MyMustache("{{#wrapped}}{{name}} is awesome.{{/wrapped}}") 
-    template.render(Map("name"->"Willy"))
+}
+val template = new MyMustache("{{#wrapped}}{{name}} is awesome.{{/wrapped}}") 
+template.render(Map("name"->"Willy"))
 ```
 
 Sometimes it is nice to keep different kinds of helpers separate. To do so, you can
 define helper traits and then mix them up as needed:
 
 ``` scala
-    trait MyHelper {
-      this: MyHelper with MustacheHelperSupport =>
+trait MyHelper {
+  this: MyHelper with MustacheHelperSupport =>
 
-      def wrapped(str:String) = "<b>"+render(str)+"</b>"
-    }
+  def wrapped(str:String) = "<b>"+render(str)+"</b>"
+}
 
-    class MyMustache(template:String) 
-      extends Mustache(template) with MyHelper {}
+class MyMustache(template:String) 
+  extends Mustache(template) with MyHelper {}
 ```
 
 MustacheHelperSupport trait defines following methods you can use in your helper methods:
 ``` scala
-    protected def context:Any                   // returns current context
-    protected def render(template:String):Any   // renders template string
+protected def context:Any                   // returns current context
+protected def render(template:String):Any   // renders template string
 ```
 
 ### weePickle support
 
-This library supports weePickle AST as context values. It also accepts Json strings as
+This library supports [weePickle][3] AST as context values. It also accepts Json strings as
 input for context:
 
 ``` scala
 
-    val baseTemplate = new Mustache(
-      "<h2>Names</h2>\n{{#names}}\n  {{> user}}\n{{/names}}"
-    )
-    val str = """{"names": [{"name": "Alice"}, {"name": "Bob"}]}"""
-    val ctx = Obj(
-      "names"-> Arr(
-        Obj("name"->Str("Alice")),
-        Obj("name"->Str("Bob"))
-      )
-    )
-    val partials = Map("user" -> userTemplate)
+val baseTemplate = new Mustache(
+  "<h2>Names</h2>\n{{#names}}\n  {{> user}}\n{{/names}}"
+)
+val str = """{"names": [{"name": "Alice"}, {"name": "Bob"}]}"""
+val ctx = Obj(
+  "names"-> Arr(
+    Obj("name"->Str("Alice")),
+    Obj("name"->Str("Bob"))
+  )
+)
+val partials = Map("user" -> userTemplate)
 
-    println(baseTemplate.render(obj, partials))
-    println(baseTemplate.render(str, partials))
+println(baseTemplate.render(obj, partials))
+println(baseTemplate.render(str, partials))
 ```
 Both returns
 ``` html
-    <h2>Names</h2>
+<h2>Names</h2>
 
-      <strong>Alice</strong>
+  <strong>Alice</strong>
 
-      <strong>Bob</strong>
+  <strong>Bob</strong>
 ```
 
 
@@ -161,3 +161,4 @@ Enjoy !
 
 [1]: https://mustache.github.io/
 [2]: https://www.scala-sbt.org/
+[3]: https://github.com/rallyhealth/weePickle/
