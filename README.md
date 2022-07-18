@@ -122,6 +122,8 @@ input for context:
 val baseTemplate = new Mustache(
   "<h2>Names</h2>\n{{#names}}\n  {{> user}}\n{{/names}}"
 )
+val userTemplate = new Mustache("<strong>{{name}}</strong>")
+
 val str = """{"names": [{"name": "Alice"}, {"name": "Bob"}]}"""
 val ctx = Obj(
   "names"-> Arr(

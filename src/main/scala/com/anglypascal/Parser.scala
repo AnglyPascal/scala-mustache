@@ -1,4 +1,4 @@
-package mustache 
+package com.anglypascal.mustache 
 
 import scala.annotation.tailrec
 import scala.io.Source

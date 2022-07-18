@@ -1,4 +1,4 @@
-package mustache 
+package com.anglypascal.mustache 
 
 import scala.annotation.tailrec
 import scala.io.Source
@@ -7,6 +7,9 @@ import scala.collection.Map
 import com.rallyhealth.weejson.v1._
 import com.rallyhealth.weejson.v1.jackson.FromJson
 import com.rallyhealth.weepickle.v1.WeePickle._
+
+
+import scala.reflect.runtime.universe._
 
 /**
  * view helper trait 
@@ -124,29 +127,10 @@ class Mustache(root: Token)
 
 object Mustache{
   def main(args : Array[String]) : Unit = {
-    val template = new Mustache("Hello, {{ name }}!")
-    // println(template.render(Map("name"->"world")))
-
-    val userTemplate = new Mustache("<strong>{{name}}</strong>")
-    val baseTemplate = new Mustache(
-      "<h2>Names</h2>\n{{#names}}\n  {{> user}}\n{{/names}}"
-    )
-    val obj  = Obj(
-      "names"-> Arr(
-        Obj("name"->Str("Alice")),
-        Obj("name"->Str("Bob"))
-      )
-    )
-    val str = """{"names": [{"name": "Alice"}, {"name": "Bob"}]}"""
-
-    val partials = Map("user" -> userTemplate)
-    // println(baseTemplate.render(ctx, partials))
+    val template = new Mustache("Hello, {{{ name }}}!")
     
-    println(baseTemplate.render(obj, partials))
-    println(baseTemplate.render(str, partials))
-    // val s = Str("ah")
-    // println(s.str.getClass)
-    // println(template.render(v))
+    val html = "<hah>"
+    println(template.render(Map("name" -> html)))
   }
 
 }

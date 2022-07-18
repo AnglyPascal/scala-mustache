@@ -1,4 +1,4 @@
-package mustache 
+package com.anglypascal.mustache 
 
 import scala.collection.Map
 import com.rallyhealth.weejson.v1._
@@ -198,11 +198,11 @@ case class UnescapedToken(key: String, otag: String, ctag: String)
       val v = format(valueOf(key,context,partials,callstack,"",defaultRender(otag,ctag)))
       new TokenProduct {
         val maxLength = v.length
-        def write(out:StringBuilder):Unit = {out.append(v)}
+        def write(out: StringBuilder):Unit = {out.append(v)}
       }
   }
 
-  def templateSource:String = source
+  def templateSource: String = source
 }
 
 case class EscapedToken(key:String, otag:String, ctag:String) 
@@ -216,7 +216,7 @@ case class EscapedToken(key:String, otag:String, ctag:String)
       val v = format(value)
       new TokenProduct {
         val maxLength = (v.length*1.2).toInt
-        def write(out:StringBuilder):Unit =
+        def write(out: StringBuilder): Unit =
           v.foreach {
             case '<' => out.append("&lt;")
             case '>' => out.append("&gt;")

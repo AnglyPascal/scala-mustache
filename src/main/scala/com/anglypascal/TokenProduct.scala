@@ -1,4 +1,4 @@
-package mustache 
+package com.anglypascal.mustache 
 
 /** A TokenProduct object represents a rendered token
  *  EmptyProduct represents failure
