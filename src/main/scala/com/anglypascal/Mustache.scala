@@ -129,9 +129,11 @@ class Mustache(root: Token)
 
 object Mustache{
   def main(args : Array[String]) : Unit = {
-    val template = new Mustache("Hello, {{#names}}{{name}} {{/names}}!")
-
-    val obj = Obj("names" -> Arr(Obj("name" -> "a"), Obj("name" -> "b")))
+    val template = new Mustache("Hello, {{ #name }}{{haha}}{{ /name }}!") {
+      def name = List( Map("haha" -> "Ah"), Map("haha" -> "san") )
+    }
+    
+    println(template.render())
   }
 
 }
