@@ -1,6 +1,6 @@
-import scala.io.Source
+package com.anglypascal.mustache 
 
-package mustache {
+import scala.io.Source
 
 object PerformanceTest {
 
@@ -54,7 +54,6 @@ object PerformanceTest {
     println(filename+" : "+(t2-t1))
   }
 
-}
 }
 
 

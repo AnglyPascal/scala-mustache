@@ -1,7 +1,8 @@
+package com.anglypascal.mustache 
+
 import org.specs2.mutable._
 import org.specs2.runner._
 
-package mustache {
 object Issue3Specification extends Specification {
 
   "mustache" should {
@@ -48,7 +49,6 @@ object Issue3Specification extends Specification {
 
   }
 
-}
 }
 
 

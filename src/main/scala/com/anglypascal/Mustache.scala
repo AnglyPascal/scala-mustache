@@ -8,7 +8,6 @@ import com.rallyhealth.weejson.v1._
 import com.rallyhealth.weejson.v1.jackson.FromJson
 import com.rallyhealth.weepickle.v1.WeePickle._
 
-
 import scala.reflect.runtime.universe._
 
 /**
@@ -44,7 +43,7 @@ case class MustacheParseException(line: Int, msg: String)
  *  Provides render method to render the template
  */
 class Mustache(root: Token) 
-  extends MustacheHelperSupport {
+  extends MustacheHelperSupport with Obj2Scala {
 
   def this(source: Source, open: String = "{{", close: String = "}}") =
     this((new Parser {
@@ -105,10 +104,12 @@ class Mustache(root: Token)
     partials: Map[String, Mustache] = Map(),
     callstack: List[Any]            = List(this)): String = {
       context match {
-        case c: String => {
-          val obj = FromJson(c).transform(Value)
-          product(obj, partials, callstack).toString
+        case str: String => {
+          val obj = FromJson(str).transform(Value)
+          product(val2Scala(obj), partials, callstack).toString
         }
+        case obj: Value => 
+          product(val2Scala(obj), partials, callstack).toString
         case other =>
           product(other, partials, callstack).toString
       }
@@ -122,15 +123,15 @@ class Mustache(root: Token)
     partials: Map[String, Mustache] = Map(),
     callstack: List[Any]            = List(this)) : TokenProduct =
       compiledTemplate.render(context, partials, callstack)
+
 }
 
 
 object Mustache{
   def main(args : Array[String]) : Unit = {
-    val template = new Mustache("Hello, {{{ name }}}!")
-    
-    val html = "<hah>"
-    println(template.render(Map("name" -> html)))
+    val template = new Mustache("Hello, {{#names}}{{name}} {{/names}}!")
+
+    val obj = Obj("names" -> Arr(Obj("name" -> "a"), Obj("name" -> "b")))
   }
 
 }

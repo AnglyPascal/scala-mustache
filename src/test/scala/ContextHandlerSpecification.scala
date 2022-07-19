@@ -1,4 +1,4 @@
-package mustache 
+package com.anglypascal.mustache 
 
 import scala.concurrent.{Future}
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -27,11 +27,6 @@ object ContextHandlerSpecification
     "extract values out of the map" >> {
       T.valueOf("n/a", Map(), Map(), List(SampleTemplate),"", render) must be equalTo(None)
       T.valueOf("foo", Map("foo"->"bar"), Map(), List(SampleTemplate),"", render) must be equalTo("bar")
-    }
-
-    "extract values out of weejson AST" >> {
-      T.valueOf("n/a", Obj(), Map(), List(SampleTemplate),"", render) must be equalTo(None)
-      T.valueOf("foo", Obj("foo"->"bar"), Map(), List(SampleTemplate),"", render) must be equalTo("bar")
     }
 
     object SampleObject {

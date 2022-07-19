@@ -1,7 +1,8 @@
+package com.anglypascal.mustache 
+
 import org.specs2.mutable._
 import org.specs2.runner._
 
-package mustache {
 object ValuesFormatterSpecification extends Specification {
 
   "values formatter" should {
@@ -19,6 +20,4 @@ object ValuesFormatterSpecification extends Specification {
       T.format(42) must be equalTo("42")
     }
   }
-
-}
 }

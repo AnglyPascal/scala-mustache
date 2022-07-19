@@ -12,6 +12,8 @@ lazy val root = (project in file("."))
       "com.rallyhealth" %% "weepickle-v1" % "1.7.2",
       "com.rallyhealth" %% "weeyaml-v1" % "1.7.2"
     ),
+    libraryDependencies += "com.lihaoyi" %% "os-lib" % "0.8.0",
+    libraryDependencies += "com.lihaoyi" %% "upickle" % "0.9.5",
     resolvers += "Typesafe Repository" at "https://repo.typesafe.com/typesafe/releases/",
     resolvers += "Typesafe Snapshots Repository" at 
       "https://repo.typesafe.com/typesafe/snapshots/",

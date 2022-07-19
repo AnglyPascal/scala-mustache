@@ -1,7 +1,7 @@
+package  com.anglypascal.mustache
+
 import org.specs2.mutable._
 import org.specs2.runner._
-
-package mustache {
 
 object ParserSpecification extends Specification {
 
@@ -139,7 +139,5 @@ object ParserSpecification extends Specification {
     }
 
   }
-
-}
 
 }

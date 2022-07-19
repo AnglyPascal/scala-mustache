@@ -184,7 +184,7 @@ case class SectionToken(
         t.render(context, partials, context::callstack)
       }
 
-  def templateSource:String = source
+  def templateSource: String = source
 }
 
 case class UnescapedToken(key: String, otag: String, ctag: String) 

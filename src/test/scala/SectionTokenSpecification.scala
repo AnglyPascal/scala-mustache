@@ -1,7 +1,8 @@
+package  com.anglypascal.mustache 
+
 import org.specs2.mutable._
 import org.specs2.runner._
 
-package mustache {
 object SectionTokenSpecification extends Specification {
 
   object SampleTemplate extends Mustache("")
@@ -142,6 +143,4 @@ object SectionTokenSpecification extends Specification {
     }
 
   }
-
-}
 }

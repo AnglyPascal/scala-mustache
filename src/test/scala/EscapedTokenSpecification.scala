@@ -1,4 +1,4 @@
-package mustache 
+package com.anglypascal.mustache 
 
 import org.specs2.mutable._
 import org.specs2.runner._
@@ -15,13 +15,6 @@ object EscapedTokenSpecification extends Specification {
         Map("foo"->"\"<>&test\""), Map(), List(SampleTemplate)
       ).toString must be equalTo("&quot;&lt;&gt;&amp;test&quot;")
     }
-
-    "render escaped text with Value" >> {
-      EscapedToken("foo","{{","}}").render(
-        Obj("foo" -> "\"<>&test\""), Map(), List(SampleTemplate)
-      ).toString must be equalTo("&quot;&lt;&gt;&amp;test&quot;")
-    }
   }
-
 }
 
