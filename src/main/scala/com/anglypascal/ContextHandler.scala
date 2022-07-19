@@ -28,9 +28,7 @@ trait ContextHandler extends TypeAliases {
       .filter(_.isInstanceOf[Mustache]).asInstanceOf[List[Mustache]]
       .foldLeft( () => 
         { eval(findInContext(context::callstack, key), childrenString, r) }
-      )( (f, e) => 
-        { () => { e.withContextAndRenderFn(context, r)( f() ) } } 
-      )
+      )( (f, e) => {() => {e.withContextAndRenderFn(context, r)(f())}} )
     /** let [m1, m2, m3, ... mn] = callstack
      *  resulting fold:
      *  mn.wcrf(_) . ... . m1.wcrf(_) . eval(_)

@@ -127,10 +127,11 @@ class Mustache(root: Token)
 
 object Mustache{
   def main(args : Array[String]) : Unit = {
-    val template = new Mustache("Hello, {{{ name }}}!")
+    val template = new Mustache("Hello, {{ #name }}{{haha}}{{ /name }}!") {
+      def name = List( Map("haha" -> "Ah"), Map("haha" -> "san") )
+    }
     
-    val html = "<hah>"
-    println(template.render(Map("name" -> html)))
+    println(template.render())
   }
 
 }
